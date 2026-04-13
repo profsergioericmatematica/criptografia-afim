@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Cifra Afim - Criptografia e Decifragem | Elementos de Álgebra - UNIVESP</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 24px 20px;
+            color: #1e2a3e;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            padding: 28px 30px 40px;
+        }
+        h1 {
+            font-size: 1.9rem;
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+            color: #0b3b5f;
+            font-weight: 600;
+        }
+        .sub {
+            font-size: 1rem;
+            color: #2c5282;
+            border-left: 4px solid #3182ce;
+            padding-left: 16px;
+            margin: 8px 0 20px 0;
+        }
+        .badge {
+            background: #e9ecef;
+            border-radius: 40px;
+            padding: 4px 14px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .card {
+            flex: 1;
+            min-width: 260px;
+            background: #f9fafb;
+            border-radius: 24px;
+            padding: 20px 24px;
+            border: 1px solid #e2edf2;
+        }
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-weight: 600;
+            font-size: 1.35rem;
+        }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: #1e4a6b;
+        }
+        select, textarea, button {
+            font-family: inherit;
+            font-size: 0.95rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e0;
+            padding: 10px 14px;
+            width: 100%;
+            transition: 0.2s;
+        }
+        select {
+            background-color: white;
+            cursor: pointer;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+        }
+        button {
+            background: #2c5282;
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            width: auto;
+            padding: 10px 22px;
+        }
+        button:hover {
+            background: #1a3a5f;
+        }
+        .success-msg {
+            background: #e6fffa;
+            border-left: 4px solid #319795;
+            padding: 10px 16px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            margin-top: 12px;
+            color: #234e52;
+        }
+        .demo-block {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 18px 24px;
+            margin-top: 20px;
+        }
+        .demo-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+        .inline-code {
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        footer {
+            margin-top: 36px;
+            font-size: 0.8rem;
+            text-align: center;
+            color: #5a6e85;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+        footer a {
+            color: #2c5282;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 760px) {
+            .container { padding: 20px; }
+            .card { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔐 Cifra Afim: Criptografia e Decifragem</h1>
+    <div class="sub">Elementos de Álgebra – Semana 3 · UNIVESP</div>
+    <div class="badge">📐 αx+β (mod 26) – α coprimo com 26, β entre 0 e 25</div>
+
+    <div class="flex-row">
+        <div class="card">
+            <h3>🔑 Chave de Cifra</h3>
+            <label>α (alfa) – valores coprimos com 26</label>
+            <select id="alpha">
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5" selected>5</option>
+                <option value="7">7</option>
+                <option value="9">9</option>
+                <option value="11">11</option>
+                <option value="15">15</option>
+                <option value="17">17</option>
+                <option value="19">19</option>
+                <option value="21">21</option>
+                <option value="23">23</option>
+                <option value="25">25</option>
+            </select>
+            <label>β (beta) – valores de 0 a 25</label>
+            <select id="beta">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+            </select>
+            <div class="success-msg">✅ Chave válida (α coprimo, β no intervalo 0-25).</div>
+        </div>
+        <div class="card">
+            <h3>📝 Cifrar mensagem</h3>
+            <label>Texto original</label>
+            <textarea id="plainInput" placeholder="Exemplo: A matemática é linda"></textarea>
+            <button id="encryptBtn">🔒 Cifrar →</button>
+            <label>Texto cifrado</label>
+            <textarea id="cipherOutput" readonly placeholder="Resultado..."></textarea>
+        </div>
+        <div class="card">
+            <h3>🔓 Decifrar mensagem</h3>
+            <label>Texto cifrado</label>
+            <textarea id="cipherInput" placeholder="Mensagem cifrada"></textarea>
+            <button id="decryptBtn">🔓 Decifrar →</button>
+            <label>Texto decifrado</label>
+            <textarea id="plainOutput" readonly placeholder="Resultado..."></textarea>
+        </div>
+    </div>
+
+    <div class="demo-block">
+        <div class="demo-title">📌 Exemplo dinâmico — Frase fixa do desafio</div>
+        <p style="margin: 0 0 8px 0;"><strong>🗣️ Frase original:</strong> <em>“O site usa o sistema de criptografia simples chamado “cifra afim” e utiliza a estrutura de anel de Z26.”</em></p>
+        <p style="margin: 0 0 8px 0;"><strong>🔐 Cifrada com a chave atual (α, β):</strong> <span id="demoCipherSpan" class="inline-code"></span></p>
+        <p style="margin: 0;">⬇️ O campo de decifração acima <strong>já contém essa mesma cifra</strong>. Clique em “Decifrar” (com a mesma chave) e veja a frase original reaparecer. Altere α ou β e observe que a cifra exemplo muda – somente a chave correta decifra.</p>
+    </div>
+
+    <footer>
+        © 2026 | Desenvolvido por 
+        <a href="https://instagram.com/prof.sergio.eric.matematica" target="_blank" rel="noopener noreferrer">
+            @prof.sergio.eric.matematica
+        </a> 
+        • Cifra Afim • UNIVESP
+    </footer>
+</div>
+
+<script>
+    // ========== FUNÇÕES DA CIFRA ==========
+    function mdc(a, b) {
+        a = Math.abs(a);
+        b = Math.abs(b);
+        while (b !== 0) {
+            let t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
+
+    function modInverse(a, m = 26) {
+        a = ((a % m) + m) % m;
+        for (let x = 1; x < m; x++) {
+            if ((a * x) % m === 1) return x;
+        }
+        return -1;
+    }
+
+    function validateKey(alpha) {
+        return mdc(alpha, 26) === 1;
+    }
+
+    // Transformação geral: isEncrypt = true para cifrar, false para decifrar
+    function affineTransform(text, alpha, beta, isEncrypt) {
+        if (!validateKey(alpha)) throw new Error("α não é coprimo com 26.");
+        let result = "";
+        const invAlpha = modInverse(alpha);
+        for (let i = 0; i < text.length; i++) {
+            let ch = text[i];
+            let code = ch.charCodeAt(0);
+            if (code >= 65 && code <= 90) { // A-Z
+                let x = code - 65;
+                let y;
+                if (isEncrypt) {
+                    y = (alpha * x + beta) % 26;
+                } else {
+                    let temp = (x - beta) % 26;
+                    if (temp < 0) temp += 26;
+                    y = (invAlpha * temp) % 26;
+                }
+                result += String.fromCharCode(y + 65);
+            }
+            else if (code >= 97 && code <= 122) { // a-z
+                let x = code - 97;
+                let y;
+                if (isEncrypt) {
+                    y = (alpha * x + beta) % 26;
+                } else {
+                    let temp = (x - beta) % 26;
+                    if (temp < 0) temp += 26;
+                    y = (invAlpha * temp) % 26;
+                }
+                result += String.fromCharCode(y + 65); // sempre maiúsculo na saída
+            }
+            else {
+                result += ch;
+            }
+        }
+        return result;
+    }
+
+    // ========== ELEMENTOS DA PÁGINA ==========
+    const alphaSelect = document.getElementById('alpha');
+    const betaSelect = document.getElementById('beta');
+    const plainInput = document.getElementById('plainInput');
+    const cipherOutput = document.getElementById('cipherOutput');
+    const cipherInput = document.getElementById('cipherInput');
+    const plainOutput = document.getElementById('plainOutput');
+    const encryptBtn = document.getElementById('encryptBtn');
+    const decryptBtn = document.getElementById('decryptBtn');
+    const demoSpan = document.getElementById('demoCipherSpan');
+
+    const TARGET_PHRASE = "O site usa o sistema de criptografia simples chamado “cifra afim” e utiliza a estrutura de anel de Z26.";
+
+    // Atualiza o exemplo dinâmico: cifra a frase alvo com a chave atual e preenche o campo de decifração
+    function updateDynamicExample() {
+        const alpha = parseInt(alphaSelect.value, 10);
+        const beta = parseInt(betaSelect.value, 10);
+        if (isNaN(alpha) || isNaN(beta)) return;
+        try {
+            const encryptedExample = affineTransform(TARGET_PHRASE, alpha, beta, true);
+            demoSpan.innerText = encryptedExample;
+            cipherInput.value = encryptedExample;   // sincroniza com o campo de decifração
+        } catch(e) {
+            demoSpan.innerText = "(erro na cifra)";
+            cipherInput.value = "";
+        }
+    }
+
+    // Cifrar o texto do usuário
+    function encryptUser() {
+        try {
+            const alpha = parseInt(alphaSelect.value, 10);
+            const beta = parseInt(betaSelect.value, 10);
+            const text = plainInput.value;
+            const encrypted = affineTransform(text, alpha, beta, true);
+            cipherOutput.value = encrypted;
+        } catch(err) {
+            cipherOutput.value = "ERRO: " + err.message;
+        }
+    }
+
+    // Decifrar o texto do usuário (campo cipherInput)
+    function decryptUser() {
+        try {
+            const alpha = parseInt(alphaSelect.value, 10);
+            const beta = parseInt(betaSelect.value, 10);
+            const text = cipherInput.value;
+            const decrypted = affineTransform(text, alpha, beta, false);
+            plainOutput.value = decrypted;
+        } catch(err) {
+            plainOutput.value = "ERRO: " + err.message;
+        }
+    }
+
+    // Eventos
+    alphaSelect.addEventListener('change', () => {
+        updateDynamicExample();
+        cipherOutput.value = "";
+        plainOutput.value = "";
+    });
+    betaSelect.addEventListener('change', () => {
+        updateDynamicExample();
+        cipherOutput.value = "";
+        plainOutput.value = "";
+    });
+    encryptBtn.addEventListener('click', encryptUser);
+    decryptBtn.addEventListener('click', decryptUser);
+
+    // Inicialização
+    updateDynamicExample();
+    plainInput.value = "A matemática é linda";
+    cipherOutput.value = "";
+    plainOutput.value = "";
+</script>
+</body>
+</html>
