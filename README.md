@@ -52,8 +52,7 @@ Este projeto está sob a licença MIT. Consulte o arquivo LICENSE para mais info
 ## 👨‍🏫 Autor
 Sergio Eric
 
-##📷 Instagram: @prof.sergio.eric.matematica
+📷 Instagram: @prof.sergio.eric.matematica
 
-🔗 GitHub: seu-usuario (substitua pelo seu link)
 
 ## Projeto desenvolvido como atividade prática e ferramenta de apoio didático para a disciplina Elementos de Álgebra – UNIVESP.
