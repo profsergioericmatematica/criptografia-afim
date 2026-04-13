@@ -63,7 +63,7 @@ Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) par
 
 **Sergio Eric**  
 📷 Instagram: [@prof.sergio.eric.matematica](https://instagram.com/prof.sergio.eric.matematica)  
-🔗 GitHub: [seu-usuario]([https://github.com/seu-usuario](https://github.com/profsergioericmatematica))
+🔗 GitHub: [[seu-usuario](https://github.com/profsergioericmatematica)]([https://github.com/seu-usuario](https://github.com/profsergioericmatematica))
 
 ---
 
